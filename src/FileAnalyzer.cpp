@@ -1,4 +1,4 @@
-#include "FileAnalyzer.h"
+#include "mylib/FileAnalyzer.h"
 #include <chrono>
 #include <filesystem>
 #include <fstream>

@@ -1,6 +1,6 @@
-#include "Indexer.h"
-#include "FileAnalyzer.h"
-#include "SQlite_Client.h"
+#include "mylib/Indexer.h"
+#include "mylib/FileAnalyzer.h"
+#include "mylib/SQlite_Client.h"
 #include <cstddef>
 #include <filesystem>
 #include <iostream>

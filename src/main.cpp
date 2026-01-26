@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "SQlite_Client.h"
-#include "Indexer.h"
+#include "mylib/SQlite_Client.h"
+#include "mylib/Indexer.h"
 
 int main() {
 
