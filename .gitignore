@@ -1,0 +1,106 @@
+# ==========================
+# Java / Maven
+# ==========================
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Maven target directory
+/target/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ IDEA
+*.iml
+.idea/
+out/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
+
+# ==========================
+# C++ / C
+# ==========================
+
+# Compiled object files
+*.o
+*.obj
+
+# Compiled static libraries
+*.lib
+*.a
+
+# Compiled dynamic libraries
+*.dll
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Build directories
+/build/
+/cmake-build-*/
+
+# Makefiles
+Makefile
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+
+# ==========================
+# OS Files
+# ==========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ==========================
+# Misc / Temporary
+# ==========================
+*.log
+*.tmp
+*.bak
+
+
+# ==========================
+# Databases
+# ==========================
+*.db
+*.sqlite
+*.sqlite3
+*.h2.db
+*.mv.db
+*.realm
+*.ldb
+*.sql    # optional, if you don’t want to commit dumps
+*.dump   # optional

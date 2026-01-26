@@ -1,0 +1,47 @@
+word docs
+[Content_Types].xml          <-- Describes types of content in the ZIP
+_rels/.rels                  <-- Relationships of top-level parts
+word/
+    document.xml             <-- Main document text
+    styles.xml               <-- Styles (fonts, headings, etc.)
+    numbering.xml            <-- Numbering for lists
+    header1.xml, footer1.xml <-- Headers/footers
+    media/                   <-- Images, shapes, embedded objects
+    theme/                   <-- Document theme
+
+
+xcel
+[Content_Types].xml
+_rels/.rels
+xl/
+    workbook.xml              <-- List of sheets
+    worksheets/sheet1.xml     <-- Each worksheet's data
+    sharedStrings.xml         <-- All repeated strings
+    styles.xml                <-- Formatting info
+    theme/theme1.xml
+    drawings/                <-- Charts or images
+    media/                   <-- Images
+
+
+powerpoint
+[Content_Types].xml
+_rels/.rels
+ppt/
+    presentation.xml          <-- Slide order & master info
+    slides/slide1.xml         <-- Each slide's content
+    slides/_rels/slide1.xml.rels <-- Relationships for slide media
+    slideLayouts/             <-- Layout templates
+    slideMasters/             <-- Master slide definitions
+    notesSlides/              <-- Slide notes
+    media/                    <-- Images, audio, video
+    charts/                   <-- Embedded charts
+
+
+epub
+mimetype                     <-- "application/epub+zip"
+META-INF/container.xml       <-- Points to root file (usually OEBPS/content.opf)
+OEBPS/
+    content.opf              <-- Manifest, spine, metadata
+    *.xhtml                  <-- Chapter content
+    images/                  <-- Embedded images
+    styles/                  <-- CSS files
