@@ -11,7 +11,7 @@ void Indexer::index(const std::string &root_path, Client *client) {
     // Iterate recursively through all files and directories
     for (const auto &entry :
          std::filesystem::recursive_directory_iterator(root_path)) {
-      if (std::filesystem::is_regular_file(entry.path())) { // only print files
+      if (std::filesystem::is_regular_file(entry.path()) && FileAnalyzer::isMicrosoftCompressedXML(entry.path())) { // only print files
 
         // ====================
         // Get basic metadata on the file
@@ -77,11 +77,11 @@ VALUES ('/home/user/test.txt', 1024, 420);*/
         // ====================
 
         if (FileAnalyzer::isDOCX(entry.path())) {
-          // FileAnalyzer::extractDOCX_text(entry.path());
+          FileAnalyzer::extractDOCX_text(entry.path());
         }
 
         if (FileAnalyzer::isRawText(entry.path())) {
-          // FileAnalyzer::extractRaw_text(entry.path());
+          FileAnalyzer::extractRaw_text(entry.path());
         }
 
         if (FileAnalyzer::isPDF(entry.path())) {

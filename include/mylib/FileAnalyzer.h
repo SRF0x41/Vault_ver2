@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -41,9 +42,15 @@ public:
   static bool isStopWord(const std::string &word);
 
   // =====================
+  // Word utilities
+  // ====================
+  static int removeTrailingPunctuation(std::string &word);
+
+  // =====================
   // Keyword Extraction
   // =====================
-  static std::string getKeywords(const std::string &word);
+  static void addKeywords(std::string &word);
+  static void clearUniqueFileWords();
 
   // =====================
   // Test Text Extraction
@@ -62,6 +69,7 @@ private:
   static const std::unordered_set<std::string_view> stopWords;
   static const std::unordered_set<char> punctuationSet;
   static constexpr int TOTAL_KEYWORDS = 100;
+  static std::unordered_map<std::string, size_t> unique_file_words;
 };
 
 /* Notes:

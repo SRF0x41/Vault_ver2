@@ -10,6 +10,9 @@
 #include <zip.h>
 #include <zipconf.h>
 
+// Initialize the hashmap
+std::unordered_map<std::string, size_t> FileAnalyzer::unique_file_words;
+
 // =====================
 // Stop Words and Punctuation
 // =====================
@@ -214,6 +217,23 @@ bool FileAnalyzer::isStopWord(const std::string &word) {
 // =====================
 // Keyword Extraction (Raw Text)
 // =====================
+
+int FileAnalyzer::removeTrailingPunctuation(std::string &word) {
+  if (word.size() == 0) {
+    return 1;
+  }
+  if (punctuationSet.find(word[0]) == punctuationSet.end()) {
+    word.erase(0, 1);
+  }
+  if (punctuationSet.find(word[word.size() - 1]) == punctuationSet.end()) {
+    word.erase(word.size() - 1, 1);
+  }
+  if (word.size() == 0) {
+    return 1;
+  }
+  return 0;
+}
+
 /* std::unordered_map<int, std::string> fruits = {
         {1, "Apple"},
         {2, "Banana"},
@@ -241,29 +261,28 @@ bool FileAnalyzer::isStopWord(const std::string &word) {
 }
 */
 
-std::string FileAnalyzer::removeTrailingPunctuation_copy(const std::string &word) {
-  bool first = false;
-  bool last = false;
-  std::string clean_string = std::string(word);
-  if (punctuationSet.find(word[0]) == punctuationSet.end()) {
-    first = true;
-  }
-  if (punctuationSet.find(word[word.size() - 1]) == punctuationSet.end()) {
-    last = true;
+void FileAnalyzer::addKeywords(std::string &word) {
+  // If the word is empty, return
+  if (word.size() == 0)
+    return;
+
+  // If word is a stop word return
+  if (isStopWord(word)) {
+    return;
   }
 
-  if(first){
-    clean_string = clean_string.substring(1);
-  }
-  if(last){
-    clean_string.substring(0, s.size() - 1);
-  }
+  // Remove trailing punctiation
+  if (!FileAnalyzer::removeTrailingPunctuation(word)) {
+    return;
+  };
+
+  FileAnalyzer::unique_file_words[word]++;
 }
 
-std::string FileAnalyzer::getKeywords(const std::string &word) {
-  // Input cannot be a stop words, check for stop word before inputing
-  std::unordered_map<std::string, size_t> parsed_unique_words return "";
-}
+
+
+
+void FileAnalyzer::clearUniqueFileWords() { unique_file_words.clear(); }
 
 // =====================
 // Extract Raw Text Word by Word
