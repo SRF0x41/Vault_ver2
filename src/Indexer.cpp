@@ -15,6 +15,9 @@ void Indexer::index(const std::string &root_path, Client *client) {
           FileAnalyzer::isMicrosoftCompressedXML(entry.path()) &&
           !FileAnalyzer::isMACOS_Metadata(entry.path())) { // only print files
 
+
+        std::cout << "\n==================== START OF NEW INDEX ====================\n";
+
         // ====================
         // Get basic metadata on the file
         // ====================

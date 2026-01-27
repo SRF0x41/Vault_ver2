@@ -70,7 +70,7 @@ std::string FileAnalyzer::getExt(const std::string &path) {
 }
 
 bool FileAnalyzer::isMACOS_Metadata(const std::string &path) {
-  if (path.substr(0, 2) == "._") {
+  if (FileAnalyzer::getName(path).substr(0, 2) == "._") {
     return true;
   }
   return false;

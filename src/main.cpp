@@ -28,6 +28,10 @@ int main() {
         if(input_line == "get-metadata-head"){
 
         }
+
+        if(input_line == "delete-file_index"){
+            client.deleteFileIndex();
+        }
     }
 
 }

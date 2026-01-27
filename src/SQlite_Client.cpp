@@ -46,7 +46,7 @@ int Client::sendQuery(const std::string &query) {
   char *messaggeError;
   exit_status = sqlite3_exec(database, query.c_str(), NULL, 0, &messaggeError);
   if (exit_status != SQLITE_OK) {
-    std::cerr << "Error sending query " << std::endl;
+    std::cerr << "Error sending query " << query << std::endl;
     sqlite3_free(messaggeError);
     return 1;
   }
@@ -137,7 +137,7 @@ int Client::decrementExtensionCount_getcount(const std::string &extension) {
 }
 int Client::getMetadata() { return 0; };
 
-int Client::dropFileIndex() {
+int Client::deleteFileIndex() {
   if (!Client::sendQuery("DELETE FROM file_index")) {
     std::cerr << "Error deleting contents from file_index.\n";
     return 1;

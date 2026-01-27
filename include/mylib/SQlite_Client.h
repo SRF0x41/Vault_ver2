@@ -18,7 +18,7 @@ class Client {
     int getFileIndexHead();
     int getMetadata();
 
-    int dropFileIndex();
+    int deleteFileIndex();
     int dropMetadata();
 
     int incrementExtensionCount(const std::string &extension);
