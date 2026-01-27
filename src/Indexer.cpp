@@ -11,7 +11,9 @@ void Indexer::index(const std::string &root_path, Client *client) {
     // Iterate recursively through all files and directories
     for (const auto &entry :
          std::filesystem::recursive_directory_iterator(root_path)) {
-      if (std::filesystem::is_regular_file(entry.path()) && FileAnalyzer::isMicrosoftCompressedXML(entry.path())) { // only print files
+      if (std::filesystem::is_regular_file(entry.path()) &&
+          FileAnalyzer::isMicrosoftCompressedXML(entry.path()) &&
+          !FileAnalyzer::isMACOS_Metadata(entry.path())) { // only print files
 
         // ====================
         // Get basic metadata on the file

@@ -35,6 +35,7 @@ public:
   static bool isRawText(const std::string &path);
   static bool isMicrosoftCompressedXML(const std::string &path);
   static bool isDOCX(const std::string &path);
+  static bool isMACOS_Metadata(const std::string &path);
 
   // =====================
   // Stop Word Utilities

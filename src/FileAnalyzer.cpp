@@ -69,6 +69,13 @@ std::string FileAnalyzer::getExt(const std::string &path) {
   return std::filesystem::path(path).extension().string();
 }
 
+bool FileAnalyzer::isMACOS_Metadata(const std::string &path) {
+  if (path.substr(0, 2) == "._") {
+    return true;
+  }
+  return false;
+}
+
 std::string FileAnalyzer::getPermissions(const std::string &path) {
   std::filesystem::perms perms = std::filesystem::status(path).permissions();
   std::string perms_str;
@@ -278,9 +285,6 @@ void FileAnalyzer::addKeywords(std::string &word) {
 
   FileAnalyzer::unique_file_words[word]++;
 }
-
-
-
 
 void FileAnalyzer::clearUniqueFileWords() { unique_file_words.clear(); }
 

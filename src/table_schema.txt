@@ -1,0 +1,72 @@
+CREATE TABLE file_index(
+file_id INTEGER PRIMARY KEY,
+file_name TEXT,
+file_extension TEXT,
+file_path TEXT,
+file_size_bytes BIGINT,
+file_keywords TEXT,
+file_last_modified INTEGER,
+file_first_created INTEGER,
+file_permissions INTEGER);
+CREATE TABLE file_index_metadata (
+    id INTEGER PRIMARY KEY CHECK (id = 1),  -- ensures single row
+
+    -- Total files
+    total_indexed_files INTEGER DEFAULT 0,
+
+    -- Readable text files
+    n_txt INTEGER DEFAULT 0,
+    n_log INTEGER DEFAULT 0,
+    n_md INTEGER DEFAULT 0,
+    n_csv INTEGER DEFAULT 0,
+    n_xml INTEGER DEFAULT 0,
+    n_json INTEGER DEFAULT 0,
+    n_yaml INTEGER DEFAULT 0,
+    n_yml INTEGER DEFAULT 0,
+    n_ini INTEGER DEFAULT 0,
+    
+    -- Source code files
+    n_c INTEGER DEFAULT 0,
+    n_cpp INTEGER DEFAULT 0,
+    n_h INTEGER DEFAULT 0,
+    n_py INTEGER DEFAULT 0,
+    n_java INTEGER DEFAULT 0,
+    n_js INTEGER DEFAULT 0,
+    n_html INTEGER DEFAULT 0,
+    n_css INTEGER DEFAULT 0,
+    
+    -- Files that need special parser
+    n_docx INTEGER DEFAULT 0,
+    n_xlsx INTEGER DEFAULT 0,
+    n_pptx INTEGER DEFAULT 0,
+    n_pdf INTEGER DEFAULT 0,
+    n_epub INTEGER DEFAULT 0,
+    n_zip INTEGER DEFAULT 0,
+    n_rar INTEGER DEFAULT 0,
+    n_sevenz INTEGER DEFAULT 0, -- changed from n_7z
+    n_tar INTEGER DEFAULT 0,
+    n_gz INTEGER DEFAULT 0,
+    n_sqlite INTEGER DEFAULT 0,
+    n_db INTEGER DEFAULT 0,
+    n_png INTEGER DEFAULT 0,
+    n_jpg INTEGER DEFAULT 0,
+    n_jpeg INTEGER DEFAULT 0,
+    n_bmp INTEGER DEFAULT 0,
+    n_gif INTEGER DEFAULT 0,
+    n_svg INTEGER DEFAULT 0,
+    n_mp3 INTEGER DEFAULT 0,
+    n_wav INTEGER DEFAULT 0,
+    n_flac INTEGER DEFAULT 0,
+    n_mp4 INTEGER DEFAULT 0,
+    n_avi INTEGER DEFAULT 0,
+    n_mkv INTEGER DEFAULT 0,
+
+    -- Files that should never be treated as text
+    n_exe INTEGER DEFAULT 0,
+    n_dll INTEGER DEFAULT 0,
+    n_so INTEGER DEFAULT 0,
+    n_bin INTEGER DEFAULT 0,
+    n_sys INTEGER DEFAULT 0,
+    n_img INTEGER DEFAULT 0,
+    n_iso INTEGER DEFAULT 0
+);
