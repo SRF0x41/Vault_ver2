@@ -43,13 +43,17 @@ public:
   // =====================
   // Keyword Extraction
   // =====================
-  static std::vector<std::string> getKeywords(const std::string &path);
+  static std::string getKeywords(const std::string &word);
 
   // =====================
-  // Text Extraction
+  // Test Text Extraction
   // =====================
   static int extractDOCX_text(const std::string &path);
   static int extractRaw_text(const std::string &path);
+
+  // =====================
+  // Extract text Keywords
+  // =====================
 
 private:
   // =====================
@@ -57,6 +61,7 @@ private:
   // =====================
   static const std::unordered_set<std::string_view> stopWords;
   static const std::unordered_set<char> punctuationSet;
+  static constexpr int TOTAL_KEYWORDS = 100;
 };
 
 /* Notes:

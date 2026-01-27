@@ -27,13 +27,15 @@ class Client {
     int incrementExtensionCount_getcount(const std::string &extension);
     int decrementExtensionCount_getcount(const std::string &extension);
 
-    int updateFileName(const std::string &extension);
-    int updateFileExtension(const std::string &extension);
-    int updateFilePath(const std::string &extension);
-    int updateFileSize(const size_t file_size);
-    int updateFileKeywords(const std::string &extension);
-    int updateFileLastModified(const long long unix_time);
-    int updateFilePermissions(const int);
+    int checkForExistense(const std::string &path);
+
+    // int updateFileName(const std::string &extension);
+    // int updateFileExtension(const std::string &extension);
+    // int updateFilePath(const std::string &extension);
+    // int updateFileSize(const size_t file_size);
+    // int updateFileKeywords(const std::string &extension);
+    // int updateFileLastModified(const long long unix_time);
+    // int updateFilePermissions(const int);
 
 
     private:

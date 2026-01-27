@@ -54,6 +54,8 @@ int Client::sendQuery(const std::string &query) {
   return 0;
 }
 
+
+
 /*auto escape = [](const std::string &s) {
           std::string out;
           out.reserve(s.size());
@@ -90,15 +92,15 @@ std::string sqlEscape(const std::string &s) {
   return out;
 };
 
-int Client::updateFileName(const std::string &extension) {
-  return 0;
-}
-int updateFileExtension(const std::string &extension);
-int updateFilePath(const std::string &extension);
-int updateFileSize(const size_t file_size);
-int updateFileKeywords(const std::string &extension);
-int updateFileLastModified(const long long unix_time);
-int updateFilePermissions(const int);
+// int Client::updateFileName(const std::string &extension) {
+//   return 0;
+// }
+// int updateFileExtension(const std::string &extension);
+// int updateFilePath(const std::string &extension);
+// int updateFileSize(const size_t file_size);
+// int updateFileKeywords(const std::string &extension);
+// int updateFileLastModified(const long long unix_time);
+// int updateFilePermissions(const int);
 
 int Client::getFileIndexHead() {
   if (!Client::sendQuery("select * from file_index limit 10;")) {

@@ -70,7 +70,7 @@ VALUES ('/home/user/test.txt', 1024, 420);*/
         client->sendQuery(q);
 
         // populate metadata
-        //client->incrementExtensionCount(FileAnalyzer::getExt(entry.path()));
+        // client->incrementExtensionCount(FileAnalyzer::getExt(entry.path()));
 
         // ====================
         // Parsers

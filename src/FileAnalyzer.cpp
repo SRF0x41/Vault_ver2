@@ -1,9 +1,11 @@
 #include "mylib/FileAnalyzer.h"
 #include <chrono>
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <zip.h>
 #include <zipconf.h>
@@ -212,19 +214,55 @@ bool FileAnalyzer::isStopWord(const std::string &word) {
 // =====================
 // Keyword Extraction (Raw Text)
 // =====================
-std::vector<std::string> FileAnalyzer::getKeywords(const std::string &path) {
-  std::ifstream input_file(path);
-  if (!input_file.is_open()) {
-    std::cerr << "Error opening stop words file." << "\n";
-    return {}; // Return empty vector on fail
-  }
-  if (isRawText(path)) {
-    std::string line;
-    while (input_file >> line) {
-      std::cout << line;
+/* std::unordered_map<int, std::string> fruits = {
+        {1, "Apple"},
+        {2, "Banana"},
+        {3, "Orange"}
+    };
+
+    // Insert new elements using operator[]
+    fruits[4] = "Grape";
+    fruits[5] = "Kiwi";
+
+    // Insert using the insert method
+    fruits.insert({6, "Peach"});
+
+    std::cout << "Fruits map contains:" << std::endl;
+    for (const auto& pair : fruits) {
+        // Elements are not stored in any specific order
+        std::cout << pair.first << ": " << pair.second << std::endl;
     }
+
+    bool FileAnalyzer::isStopWord(const std::string &word) {
+  if (stopWords.find(word) != stopWords.end()) {
+    return true;
   }
-  return {};
+  return false;
+}
+*/
+
+std::string FileAnalyzer::removeTrailingPunctuation_copy(const std::string &word) {
+  bool first = false;
+  bool last = false;
+  std::string clean_string = std::string(word);
+  if (punctuationSet.find(word[0]) == punctuationSet.end()) {
+    first = true;
+  }
+  if (punctuationSet.find(word[word.size() - 1]) == punctuationSet.end()) {
+    last = true;
+  }
+
+  if(first){
+    clean_string = clean_string.substring(1);
+  }
+  if(last){
+    clean_string.substring(0, s.size() - 1);
+  }
+}
+
+std::string FileAnalyzer::getKeywords(const std::string &word) {
+  // Input cannot be a stop words, check for stop word before inputing
+  std::unordered_map<std::string, size_t> parsed_unique_words return "";
 }
 
 // =====================
