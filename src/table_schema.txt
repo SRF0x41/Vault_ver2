@@ -1,13 +1,7 @@
-CREATE TABLE file_index(
-file_id INTEGER PRIMARY KEY,
-file_name TEXT,
-file_extension TEXT,
-file_path TEXT,
-file_size_bytes BIGINT,
-file_keywords TEXT,
-file_last_modified INTEGER,
-file_first_created INTEGER,
-file_permissions INTEGER);
+[user1@machineone Vault_ver2]$ sqlite3 FileIndex.db 
+SQLite version 3.51.2 2026-01-09 17:27:48
+Enter ".help" for usage hints.
+sqlite> .schema
 CREATE TABLE file_index_metadata (
     id INTEGER PRIMARY KEY CHECK (id = 1),  -- ensures single row
 
@@ -69,4 +63,16 @@ CREATE TABLE file_index_metadata (
     n_sys INTEGER DEFAULT 0,
     n_img INTEGER DEFAULT 0,
     n_iso INTEGER DEFAULT 0
-);
+, last_index_time INTEGER DEFAULT 0);
+CREATE TABLE file_index(
+    file_id INTEGER PRIMARY KEY,
+    file_name TEXT,
+    file_extension TEXT,
+    file_path TEXT UNIQUE,
+    file_size_bytes BIGINT,
+    file_keywords TEXT,
+    file_last_modified INTEGER,
+    file_first_created INTEGER,
+    file_permissions INTEGER
+, last_indexed INTEGER);
+sqlite> 

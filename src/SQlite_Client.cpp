@@ -46,7 +46,7 @@ int Client::sendQuery(const std::string &query) {
   char *messaggeError;
   exit_status = sqlite3_exec(database, query.c_str(), NULL, 0, &messaggeError);
   if (exit_status != SQLITE_OK) {
-    std::cerr << "Error sending query " << query << std::endl;
+    std::cerr << "Error sending query " << messaggeError << std::endl;
     sqlite3_free(messaggeError);
     return 1;
   }

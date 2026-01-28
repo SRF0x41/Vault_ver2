@@ -15,8 +15,8 @@ void Indexer::index(const std::string &root_path, Client *client) {
           FileAnalyzer::isMicrosoftCompressedXML(entry.path()) &&
           !FileAnalyzer::isMACOS_Metadata(entry.path())) { // only print files
 
-
-        std::cout << "\n==================== START OF NEW INDEX ====================\n";
+        std::cout << "\n==================== START OF NEW INDEX "
+                     "====================\n";
 
         // ====================
         // Get basic metadata on the file
@@ -62,16 +62,25 @@ VALUES ('/home/user/test.txt', 1024, 420);*/
           return out;
         };
 
+        // Current unix time
+        // Get the current time point
+        long long duration_since_epoch =
+            std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::system_clock::now().time_since_epoch())
+                .count();
+
         std::string q = std::format(
-            "INSERT INTO file_index "
+            "INSERT OR IGNORE INTO file_index "
             "(file_name,file_extension,file_path,file_size_bytes,"
-            "file_last_modified,file_permissions) "
-            "VALUES ('{}','{}','{}',{},{},{})",
+            "file_last_modified,file_permissions,last_indexed) "
+            "VALUES ('{}','{}','{}',{},{},{},{})",
             escape(FileAnalyzer::getName(entry.path())),
             escape(FileAnalyzer::getExt(entry.path())),
             escape(entry.path().string()), FileAnalyzer::getSize(entry.path()),
             FileAnalyzer::getLastModifiedUnixTime(entry.path()),
-            FileAnalyzer::getPermissions_int(entry.path()));
+            FileAnalyzer::getPermissions_int(entry.path()),
+            duration_since_epoch);
+
         client->sendQuery(q);
 
         // populate metadata
