@@ -54,7 +54,7 @@ public:
   static void addKeyword(char* word);
   static void clearUniqueFileWords();
   static void printKeywords();
-  static void sortKeywordsDescending();
+  static std::string* sortKeywordsDescending();
   
 
   // =====================

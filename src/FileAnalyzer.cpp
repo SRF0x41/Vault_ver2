@@ -206,6 +206,8 @@ int FileAnalyzer::removeTrailingPunctuation(string &word) {
 }
 
 void FileAnalyzer::addKeyword(string &word) {
+  if (unique_file_words.size() > TOTAL_KEYWORDS)
+    return;
   if (word.size() == 0)
     return;
   if (isStopWord(word))
@@ -216,6 +218,8 @@ void FileAnalyzer::addKeyword(string &word) {
 }
 
 void FileAnalyzer::addKeyword(char *word) {
+  if (unique_file_words.size() > TOTAL_KEYWORDS)
+    return;
   string s_word(word);
   if (s_word.size() == 0)
     return;
@@ -240,15 +244,17 @@ bool keyword_comparator(const pair<string, size_t> &a,
   return a.second > b.second; // descending
 }
 
-void FileAnalyzer::sortKeywordsDescending() {
+string *FileAnalyzer::sortKeywordsDescending() {
   vector<pair<string, size_t>> sorted_vector;
+  string *out_str = new string();
   for (auto &keyword : unique_file_words)
     sorted_vector.push_back(keyword);
 
   sort(sorted_vector.begin(), sorted_vector.end(), keyword_comparator);
 
   for (auto &a : sorted_vector)
-    cout << "|" << a.first << ":" << a.second << "|\n";
+    *out_str += a.first + " ";
+  return out_str;
 }
 
 // =====================
@@ -266,7 +272,9 @@ int FileAnalyzer::extractRaw_text(const string &path) {
     addKeyword(word);
 
   printKeywords();
-  sortKeywordsDescending();
+  string *sorted_keywords = sortKeywordsDescending();
+  cout << *sorted_keywords << '\n';
+  delete (sorted_keywords);
   clearUniqueFileWords();
   input_file.close();
   return 0;
@@ -328,7 +336,10 @@ int FileAnalyzer::extractDOCX_text(const string &path) {
   }
 
   printKeywords();
-  sortKeywordsDescending();
+  string *sorted_keywords = sortKeywordsDescending();
+  cout << *sorted_keywords << '\n';
+  delete (sorted_keywords);
+
   clearUniqueFileWords();
 
   zip_fclose(zf);
