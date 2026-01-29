@@ -50,8 +50,11 @@ public:
   // =====================
   // Keyword Extraction
   // =====================
-  static void addKeywords(std::string &word);
+  static void addKeyword(std::string &word);
+  static void addKeyword(char* word);
   static void clearUniqueFileWords();
+  static void printKeywords();
+  
 
   // =====================
   // Test Text Extraction
@@ -69,7 +72,7 @@ private:
   // =====================
   static const std::unordered_set<std::string_view> stopWords;
   static const std::unordered_set<char> punctuationSet;
-  static constexpr int TOTAL_KEYWORDS = 100;
+  static constexpr int TOTAL_KEYWORDS = 1000;
   static std::unordered_map<std::string, size_t> unique_file_words;
 };
 

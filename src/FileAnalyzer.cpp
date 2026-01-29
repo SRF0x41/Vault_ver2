@@ -1,6 +1,7 @@
 #include "mylib/FileAnalyzer.h"
 #include <chrono>
 #include <cstddef>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -226,13 +227,14 @@ bool FileAnalyzer::isStopWord(const std::string &word) {
 // =====================
 
 int FileAnalyzer::removeTrailingPunctuation(std::string &word) {
+  // std::cout << "Removing trailing punctuation for " << word << '\n';
   if (word.size() == 0) {
     return 1;
   }
-  if (punctuationSet.find(word[0]) == punctuationSet.end()) {
+  if (punctuationSet.find(word[0]) != punctuationSet.end()) {
     word.erase(0, 1);
   }
-  if (punctuationSet.find(word[word.size() - 1]) == punctuationSet.end()) {
+  if (punctuationSet.find(word[word.size() - 1]) != punctuationSet.end()) {
     word.erase(word.size() - 1, 1);
   }
   if (word.size() == 0) {
@@ -268,8 +270,9 @@ int FileAnalyzer::removeTrailingPunctuation(std::string &word) {
 }
 */
 
-void FileAnalyzer::addKeywords(std::string &word) {
+void FileAnalyzer::addKeyword(std::string &word) {
   // If the word is empty, return
+
   if (word.size() == 0)
     return;
 
@@ -279,14 +282,45 @@ void FileAnalyzer::addKeywords(std::string &word) {
   }
 
   // Remove trailing punctiation
-  if (!FileAnalyzer::removeTrailingPunctuation(word)) {
+  if (FileAnalyzer::removeTrailingPunctuation(word)) {
     return;
   };
 
-  FileAnalyzer::unique_file_words[word]++;
+  unique_file_words[word]++;
+}
+
+void FileAnalyzer::addKeyword(char *word) {
+
+  std::string s_word(word);
+
+  // If the word is empty, return
+  if (s_word.size() == 0)
+    return;
+
+  // If word is a stop word return
+  if (isStopWord(s_word)) {
+    // std::cout << s_word << " is a stop word. \n";
+    return;
+  }
+
+  // Remove trailing punctiation
+  if (FileAnalyzer::removeTrailingPunctuation(s_word)) {
+    return;
+  };
+  unique_file_words[s_word]++;
 }
 
 void FileAnalyzer::clearUniqueFileWords() { unique_file_words.clear(); }
+
+void FileAnalyzer::printKeywords() { // mark const if it doesn't modify members
+  std::cout << "Number of keywords: " << unique_file_words.size() << "\n";
+
+  for (const auto &[word, count] : unique_file_words) {
+    std::cout << word << ":" << count << " | ";
+  }
+
+  std::cout << "\n";
+}
 
 // =====================
 // Extract Raw Text Word by Word
@@ -381,15 +415,20 @@ int FileAnalyzer::extractDOCX_text(const std::string &path) {
           word[word_size] = '\0';
           word_size = 0;
 
-          if (!FileAnalyzer::isStopWord(word)) {
-            std::cout << word << " ";
-          }
+          FileAnalyzer::addKeyword(word);
+
         } else {
           word_size++;
         }
       }
     }
   }
+
+  // Print keywords recorded
+  FileAnalyzer::printKeywords();
+
+  // Clear the static hashmap for new file to read
+  FileAnalyzer::clearUniqueFileWords();
 
   // close zf
   zip_fclose(zf);
