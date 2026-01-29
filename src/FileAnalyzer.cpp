@@ -260,7 +260,7 @@ string *FileAnalyzer::sortKeywordsDescending() {
 // =====================
 // Extract Raw Text Word by Word
 // =====================
-int FileAnalyzer::extractRaw_text(const string &path) {
+int FileAnalyzer::test_extractRaw_text(const string &path) {
   ifstream input_file(path);
   if (!input_file) {
     cerr << "Error opening raw text file." << '\n';
@@ -280,10 +280,28 @@ int FileAnalyzer::extractRaw_text(const string &path) {
   return 0;
 }
 
+string *FileAnalyzer::extractRaw(const std::string &path) {
+  ifstream input_file(path);
+  if (!input_file) {
+    cerr << "Error opening raw text file." << '\n';
+    return nullptr;
+  }
+
+  string word;
+  while (input_file >> word)
+    addKeyword(word);
+
+  printKeywords();
+  string *sorted_keywords = sortKeywordsDescending();
+  clearUniqueFileWords();
+  input_file.close();
+  return sorted_keywords;
+}
+
 // =====================
 // Extract DOCX Text
 // =====================
-int FileAnalyzer::extractDOCX_text(const string &path) {
+int FileAnalyzer::test_extractDOCX_text(const string &path) {
   int err = 0;
   zip *opened_zip = zip_open(path.c_str(), ZIP_RDONLY, &err);
   if (!opened_zip) {
@@ -346,4 +364,67 @@ int FileAnalyzer::extractDOCX_text(const string &path) {
   zip_close(opened_zip);
 
   return 0;
+}
+
+string *FileAnalyzer::extractDOCX(const std::string &path) {
+  int err = 0;
+  zip *opened_zip = zip_open(path.c_str(), ZIP_RDONLY, &err);
+  if (!opened_zip) {
+    cerr << "Failed to open zip" << '\n';
+    return nullptr;
+  }
+
+  zip_int64_t document_xml_index =
+      zip_name_locate(opened_zip, "word/document.xml", 0);
+  if (document_xml_index < 0)
+    return nullptr;
+
+  zip_stat_t st;
+  zip_stat_init(&st);
+  zip_stat_index(opened_zip, document_xml_index, 0, &st);
+  cout << st.name << '\n';
+
+  zip_file *zf = zip_fopen_index(opened_zip, document_xml_index, 0);
+  if (!zf)
+    return nullptr;
+
+  char buffer[8192];
+  zip_int64_t n;
+  bool inside_tag = false;
+  size_t word_size = 0;
+
+  while ((n = zip_fread(zf, buffer, sizeof(buffer))) > 0) {
+    for (zip_int64_t i = 0; i < n; ++i) {
+      char c = buffer[i];
+      if (c == '<') {
+        inside_tag = true;
+      } else if (c == '>') {
+        inside_tag = false;
+      } else if (!inside_tag) {
+        if (c == ' ') {
+          char word[word_size + 1];
+          zip_int64_t count = 0;
+          for (zip_int64_t x = i - word_size; x < i; x++)
+            word[count++] = buffer[x];
+          count = 0;
+          word[word_size] = '\0';
+          word_size = 0;
+
+          addKeyword(word);
+        } else {
+          word_size++;
+        }
+      }
+    }
+  }
+
+  printKeywords();
+  string *sorted_keywords = sortKeywordsDescending();
+
+  clearUniqueFileWords();
+
+  zip_fclose(zf);
+  zip_close(opened_zip);
+
+  return sorted_keywords;
 }

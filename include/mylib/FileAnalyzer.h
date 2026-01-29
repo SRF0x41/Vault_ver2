@@ -51,21 +51,22 @@ public:
   // Keyword Extraction
   // =====================
   static void addKeyword(std::string &word);
-  static void addKeyword(char* word);
+  static void addKeyword(char *word);
   static void clearUniqueFileWords();
   static void printKeywords();
-  static std::string* sortKeywordsDescending();
-  
+  static std::string *sortKeywordsDescending();
 
   // =====================
   // Test Text Extraction
   // =====================
-  static int extractDOCX_text(const std::string &path);
-  static int extractRaw_text(const std::string &path);
+  static int test_extractDOCX_text(const std::string &path);
+  static int test_extractRaw_text(const std::string &path);
 
   // =====================
-  // Extract text Keywords
+  // Extract text Keywords FREE AFTER USE
   // =====================
+  static std::string *extractDOCX(const std::string &path);
+  static std::string *extractRaw(const std::string &path);
 
 private:
   // =====================

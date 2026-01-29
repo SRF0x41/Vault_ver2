@@ -62,27 +62,6 @@ VALUES ('/home/user/test.txt', 1024, 420);*/
           return out;
         };
 
-        // Current unix time
-        // Get the current time point
-        long long duration_since_epoch =
-            std::chrono::duration_cast<std::chrono::seconds>(
-                std::chrono::system_clock::now().time_since_epoch())
-                .count();
-
-        std::string q = std::format(
-            "INSERT OR IGNORE INTO file_index "
-            "(file_name,file_extension,file_path,file_size_bytes,"
-            "file_last_modified,file_permissions,last_indexed) "
-            "VALUES ('{}','{}','{}',{},{},{},{})",
-            escape(FileAnalyzer::getName(entry.path())),
-            escape(FileAnalyzer::getExt(entry.path())),
-            escape(entry.path().string()), FileAnalyzer::getSize(entry.path()),
-            FileAnalyzer::getLastModifiedUnixTime(entry.path()),
-            FileAnalyzer::getPermissions_int(entry.path()),
-            duration_since_epoch);
-
-        client->sendQuery(q);
-
         // populate metadata
         // client->incrementExtensionCount(FileAnalyzer::getExt(entry.path()));
 
@@ -90,16 +69,67 @@ VALUES ('/home/user/test.txt', 1024, 420);*/
         // Parsers
         // ====================
 
+        std::string *parsed_file_keywords = nullptr;
         if (FileAnalyzer::isDOCX(entry.path())) {
-          FileAnalyzer::extractDOCX_text(entry.path());
+          // FileAnalyzer::test_extractDOCX_text(entry.path());
+          parsed_file_keywords = FileAnalyzer::extractDOCX(entry.path());
         }
 
         if (FileAnalyzer::isRawText(entry.path())) {
-          FileAnalyzer::extractRaw_text(entry.path());
+          // FileAnalyzer::test_extractRaw_text(entry.path());
+          parsed_file_keywords = FileAnalyzer::extractDOCX(entry.path());
         }
 
         if (FileAnalyzer::isPDF(entry.path())) {
         }
+        if (parsed_file_keywords) {
+          // std::cout << *parsed_file_keywords << '\n';
+          //  Current unix time
+          // Get the current time point
+          long long duration_since_epoch =
+              std::chrono::duration_cast<std::chrono::seconds>(
+                  std::chrono::system_clock::now().time_since_epoch())
+                  .count();
+
+          std::string q = std::format(
+              "INSERT OR IGNORE INTO file_index "
+              "(file_name,file_extension,file_path,file_size_bytes,"
+              "file_last_modified,file_permissions,last_indexed,file_keywords) "
+              "VALUES ('{}','{}','{}',{},{},{},{},'{}')",
+              escape(FileAnalyzer::getName(entry.path())),
+              escape(FileAnalyzer::getExt(entry.path())),
+              escape(entry.path().string()),
+              FileAnalyzer::getSize(entry.path()),
+              FileAnalyzer::getLastModifiedUnixTime(entry.path()),
+              FileAnalyzer::getPermissions_int(entry.path()),
+              duration_since_epoch, escape(*parsed_file_keywords));
+
+          client->sendQuery(q);
+        } else {
+          // Current unix time
+          // Get the current time point
+          long long duration_since_epoch =
+              std::chrono::duration_cast<std::chrono::seconds>(
+                  std::chrono::system_clock::now().time_since_epoch())
+                  .count();
+
+          std::string q =
+              std::format("INSERT OR IGNORE INTO file_index "
+                          "(file_name,file_extension,file_path,file_size_bytes,"
+                          "file_last_modified,file_permissions,last_indexed) "
+                          "VALUES ('{}','{}','{}',{},{},{},{})",
+                          escape(FileAnalyzer::getName(entry.path())),
+                          escape(FileAnalyzer::getExt(entry.path())),
+                          escape(entry.path().string()),
+                          FileAnalyzer::getSize(entry.path()),
+                          FileAnalyzer::getLastModifiedUnixTime(entry.path()),
+                          FileAnalyzer::getPermissions_int(entry.path()),
+                          duration_since_epoch);
+
+          client->sendQuery(q);
+        }
+
+        delete (parsed_file_keywords);
 
         // Test get keywords
         // std::cout << "KEYWORDS: " <<
